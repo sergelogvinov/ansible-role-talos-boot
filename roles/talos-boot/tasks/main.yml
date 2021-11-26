@@ -1,0 +1,49 @@
+
+- include_vars: "{{ item }}"
+  with_first_found:
+    - "../vars/{{ ansible_os_family }}.yml"
+    - "../vars/empty.yml"
+
+- name: Get Talos
+  become: yes
+  get_url:
+    url: "{{ item.url }}"
+    dest: "/boot/{{ item.name }}"
+    checksum: ""
+  with_items:
+    - { url: "{{ talos_kernel }}", checksum: "{{ talos_kernel_sha }}", name: talos-kernel     }
+    - { url: "{{ talos_initrd }}", checksum: "{{ talos_initrd_sha }}", name: talos-initrd.xz  }
+
+- name: Add grub menu
+  become: yes
+  template:
+    src: grub/debian.j2
+    dest: /etc/grub.d/10_talos
+    mode: 0755
+  when: talos_grub
+  notify: Update-grub
+
+- name: packages (debian)
+  become: yes
+  apt:
+    name: 'kexec-tools'
+  when: talos_kexec and ansible_os_family == "Debian"
+
+- name: Run Talos
+  block:
+    - name: Run kexec
+      become: yes
+      command: "kexec {{ item }}"
+      timeout: 30
+      register: result
+      failed_when: result.rc != 0
+      with_items:
+        - "-l /boot/talos-kernel --initrd=/boot/talos-initrd.xz --append=\"{{ talos_cmdline }} {{ talos_cmdline_addon }}\""
+        - "-e"
+      when: talos_kexec
+
+  rescue:
+    - name: check server
+      connection: local
+      command: "ping -c 10 {{ ansible_default_ipv4['address'] }}"
+      when: talos_kexec

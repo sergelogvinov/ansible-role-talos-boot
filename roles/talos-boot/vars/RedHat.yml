@@ -1,0 +1,3 @@
+---
+
+update_grub_cmd: /usr/sbin/grub2-mkconfig
