@@ -38,7 +38,7 @@
       register: result
       failed_when: result.rc != 0
       with_items:
-        - "-l /boot/talos-kernel --initrd=/boot/talos-initrd.xz --append=\"{{ talos_cmdline }} {{ talos_cmdline_addon }}\""
+        - "-l /boot/talos-kernel --initrd=/boot/talos-initrd.xz --append=\"{{ talos_cmdline }} {{ talos_cmdline_net }} {{ talos_cmdline_addon }}\""
         - "-e"
       when: talos_kexec
 
