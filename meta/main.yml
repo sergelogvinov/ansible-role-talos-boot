@@ -1,0 +1,18 @@
+---
+
+galaxy_info:
+  role_name: talos-boot
+  author: Serge Logvinov
+  description: Add Talos to grub menu or lauch it.
+  license: "license (BSD, MIT)"
+  min_ansible_version: 2.4
+  platforms:
+    - name: Debian
+      versions:
+        - all
+    - name: Ubuntu
+      versions:
+        - all
+  galaxy_tags: []
+
+dependencies: []
