@@ -1,0 +1,7 @@
+#!/bin/sh
+exec tail -n +3 $0
+
+menuentry "Talos" {
+    linux ($root)/talos-kernel {{ talos_cmdline }} {{ talos_cmdline_net }} {{ talos_cmdline_addon }}
+    initrd ($root)/talos-initrd.xz
+}

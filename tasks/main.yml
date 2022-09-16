@@ -14,13 +14,22 @@
     - { url: "{{ talos_kernel }}", checksum: "{{ talos_kernel_sha }}", name: talos-kernel     }
     - { url: "{{ talos_initrd }}", checksum: "{{ talos_initrd_sha }}", name: talos-initrd.xz  }
 
-- name: Add grub menu
+- name: Add grub menu (debian)
   become: yes
   template:
     src: grub/debian.j2
     dest: /etc/grub.d/10_talos
     mode: 0755
-  when: talos_grub
+  when: talos_grub and ansible_os_family == "Debian"
+  notify: Update-grub
+
+- name: Add grub menu (redhat)
+  become: yes
+  template:
+    src: grub/centos.j2
+    dest: /etc/grub.d/10_talos
+    mode: 0755
+  when: talos_grub and ansible_os_family == "RedHat"
   notify: Update-grub
 
 - name: packages (debian)

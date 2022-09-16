@@ -1,13 +1,16 @@
 
-talos_version: 1.0.1
+talos_version: 1.2.2
 talos_kernel: "https://github.com/siderolabs/talos/releases/download/v{{ talos_version }}/vmlinuz-amd64"
 talos_kernel_sha: sha256:427037dbf2b48be30140ebe5ceb86e1f3d233756e33fc0a67d3851aa772c91fa
 talos_initrd: "https://github.com/siderolabs/talos/releases/download/v{{ talos_version }}/initramfs-amd64.xz"
 talos_initrd_sha: sha256:2b6e3d5a067e36002096874661c2d7d64f5bc78cf27de7a09bb41ff207eca3a3
 
 talos_platform: metal
-talos_cmdline: "init_on_alloc=1 slab_nomerge pti=on panic=0 consoleblank=0 printk.devkmsg=on earlyprintk=ttyS0 console=tty0 console=ttyS0 talos.platform={{ talos_platform }}"
-talos_cmdline_net: "ip={{ ansible_default_ipv4['address'] }}::{{ ansible_default_ipv4['gateway'] }}:{{ ansible_default_ipv4['netmask'] }}::eth0:off"
+talos_console: console=tty1 console=ttyS0 consoleblank=0
+talos_cmdline: "init_on_alloc=1 slab_nomerge pti=on {{ talos_console }} nvme_core.io_timeout=4294967295 printk.devkmsg=on ima_template=ima-ng ima_appraise=fix ima_hash=sha512 talos.platform={{ talos_platform }}"
+
+talos_interface: "{{ ansible_default_ipv4['interface'] }}"
+talos_cmdline_net: "ip={{ ansible_default_ipv4['address'] }}::{{ ansible_default_ipv4['gateway'] }}:{{ ansible_default_ipv4['netmask'] }}::{{ talos_interface }}:off"
 talos_cmdline_addon: ""
 
 talos_grub: false
