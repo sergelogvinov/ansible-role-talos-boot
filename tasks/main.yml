@@ -32,6 +32,8 @@
   when: talos_grub and ansible_os_family == "RedHat"
   notify: Update-grub
 
+- meta: flush_handlers
+
 - name: packages (debian)
   become: yes
   apt:
