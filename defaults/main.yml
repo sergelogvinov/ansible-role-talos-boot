@@ -1,9 +1,9 @@
 
-talos_version: 1.2.5
+talos_version: 1.2.6
 talos_kernel: "https://github.com/siderolabs/talos/releases/download/v{{ talos_version }}/vmlinuz-amd64"
-talos_kernel_sha: sha256:2a652b5feb72144adb9a4db2c383b17b2463b526aa68cded418800dd224060fd
+talos_kernel_sha: sha256:21c5b21fe17e129399e4ad87e5db3618900a2c6e289e3a3e3f15941e4a8e80d1
 talos_initrd: "https://github.com/siderolabs/talos/releases/download/v{{ talos_version }}/initramfs-amd64.xz"
-talos_initrd_sha: sha256:5cff56cf1b2ce869368e3a4d8eff81002375d9a0f93ac673e80832c3bc466618
+talos_initrd_sha: sha256:bfe8f31af444d6829af8ef52ce9bd755986ad275cb8b4d5a2b00f6fd1613379f
 
 talos_platform: metal
 talos_console: console=tty1 console=ttyS0 consoleblank=0
@@ -14,4 +14,4 @@ talos_cmdline_net: "ip={{ ansible_default_ipv4['address'] }}::{{ ansible_default
 talos_cmdline_addon: ""
 
 talos_grub: false
-talos_kexec: true
+talos_kexec: false
