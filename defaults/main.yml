@@ -1,9 +1,9 @@
 
-talos_version: 1.3.2
+talos_version: 1.3.3
 talos_kernel: "https://github.com/siderolabs/talos/releases/download/v{{ talos_version }}/vmlinuz-amd64"
-talos_kernel_sha: sha256:fbe931036919b502e2d8b4d9b00e73b240d309b42f2bf582b90c54eb88fccdf0
+talos_kernel_sha: sha256:96a667dc0196eef206ad16b02ff0615144c6a2fa4577102446bbed6a2db75279
 talos_initrd: "https://github.com/siderolabs/talos/releases/download/v{{ talos_version }}/initramfs-amd64.xz"
-talos_initrd_sha: sha256:7f87e5d5746b19bfe66917b0813983f8a0557a722457b83585108d4e403d7f75
+talos_initrd_sha: sha256:86e713caae826fcf078ea902344326d907de5dde89abd1dc3d42a6dace49d32e
 
 talos_platform: metal
 talos_console: console=tty1 console=ttyS0 consoleblank=0
