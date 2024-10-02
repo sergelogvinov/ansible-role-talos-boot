@@ -15,11 +15,17 @@ In such cases, you can set the boot menu to boot the Talos kernel on the next bo
 ansible-galaxy role install git+https://github.com/sergelogvinov/ansible-role-talos-boot.git,main
 ```
 
+Or galaxy storage
+
+```shell
+ansible-galaxy role install sergelogvinov.talos-boot
+```
+
 ## Options
 
 Useful variables
 
-1. ```talos_version: 1.3.6``` - version on distributive
+1. ```talos_version: 1.7.7``` - version on distributive
 2. ```talos_grub: true``` - add boot menu to the grub (boot menu)
 3. ```talos_kexec: true``` - dowwnload and run talos
 4. ```talos_interface: eth0``` - network interface
@@ -38,7 +44,7 @@ Useful variables
     #
     # talos_cmdline_addon: "talos.logging.kernel=udp://1.2.3.4:5044"
 
-    # IPv6 network (will work from version 1.4.0)
+    # IPv6 network
     #
     # talos_cmdline_net: "ip=[{{ ansible_default_ipv6['address'] }}]::[{{ ansible_default_ipv6['gateway'] }}]:{{ ansible_default_ipv6['prefix'] }}::{{ talos_interface }}:off:[2001:4860:4860::8888]:[2606:4700::1111]:[2606:4700:f1::1]"
   roles:

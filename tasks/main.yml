@@ -43,6 +43,8 @@
   become: yes
   apt:
     name: 'kexec-tools'
+    update_cache: yes
+    cache_valid_time: 3600
   when: talos_kexec and ansible_os_family == "Debian"
 
 - name: Run Talos
