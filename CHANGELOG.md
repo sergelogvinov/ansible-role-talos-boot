@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/sergelogvinov/ansible-role-talos-boot/compare/v0.3.0...v0.4.0) (2024-10-10)
+
+
+### Features
+
+* talos machine config patch ([864c53d](https://github.com/sergelogvinov/ansible-role-talos-boot/commit/864c53de28e20415ea8ed0b9f72b8dd4f021a700))
+
 ## [0.3.0](https://github.com/sergelogvinov/ansible-role-talos-boot/compare/v0.2.0...v0.3.0) (2024-02-29)
 
 
