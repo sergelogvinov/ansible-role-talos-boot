@@ -2,6 +2,9 @@
 talos_version: 1.7.7
 
 talos_platform: metal
+talos_machineconfig: ""
+talos_machineconfig_node_labels: ""
+
 talos_console: console=tty1 console=ttyS0 consoleblank=0
 talos_cmdline: "init_on_alloc=1 slab_nomerge pti=on {{ talos_console }} nvme_core.io_timeout=4294967295 printk.devkmsg=on ima_template=ima-ng ima_appraise=fix ima_hash=sha512 talos.platform={{ talos_platform }} talos.dashboard.disabled=1 net.ifnames=0"
 

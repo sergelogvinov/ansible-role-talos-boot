@@ -1,0 +1,37 @@
+machine:
+  kubelet:
+    extraArgs:
+{% if talos_machineconfig_node_labels != '' %}
+      node-labels: "{{ talos_machineconfig_node_labels }}"
+{% endif %}
+    nodeIP:
+      validSubnets:
+        - "{{ ansible_default_ipv4['address'] }}/32"
+{% if ansible_default_ipv6 is defined and ansible_default_ipv6['interface'] is defined and ansible_default_ipv6['address'][:4] != 'fe80' %}
+        - "{{ ansible_default_ipv6['address'] }}/128"
+{% endif %}
+  network:
+    hostname: "{{ server_hostname|default(inventory_hostname)|split('.')|first }}"
+    interfaces:
+      - interface: eth0
+        dhcp: false
+        addresses:
+          - "{{ ansible_default_ipv4['address'] }}/{{ ansible_default_ipv4['prefix'] }}"
+{% if ansible_default_ipv6 is defined and ansible_default_ipv6['interface'] is defined and ansible_default_ipv6['address'][:4] != 'fe80' %}
+          - "{{ ansible_default_ipv6['address'] }}/{{ ansible_default_ipv6['prefix'] }}"
+{% endif %}
+        routes:
+          - network: "0.0.0.0/0"
+            gateway: "{{ ansible_default_ipv4['gateway'] }}"
+{% if ansible_default_ipv6 is defined and ansible_default_ipv6['interface'] is defined and ansible_default_ipv6['address'][:4] != 'fe80' %}
+          - network: "::/0"
+            gateway: "{{ ansible_default_ipv6['gateway'] }}"
+{% endif %}
+    kubespan:
+      enabled: true
+  install:
+    image: ghcr.io/siderolabs/installer:v{{ talos_version }}
+    bootloader: true
+    wipe: true
+{% set mounts = ansible_facts.mounts | selectattr('mount', 'in', ['/boot', '/']) | map(attribute='device') | reject('regex', '^/dev/mapper/.+') | list %}
+    disk: {{ mounts[0] | regex_replace('p?[0-9]+$', '') }}

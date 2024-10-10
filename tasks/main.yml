@@ -37,6 +37,12 @@
   when: talos_grub and ansible_os_family == "RedHat"
   notify: Update-grub
 
+- name: talos network patch
+  connection: local
+  template:
+    src: "talos.j2"
+    dest: "{{ playbook_dir }}/../talos-patch.yaml"
+
 - meta: flush_handlers
 
 - name: packages (debian)
@@ -65,3 +71,8 @@
       connection: local
       command: "ping -c 10 {{ ansible_default_ipv4['address'] }}"
       when: talos_kexec
+
+- name: talos apply command
+  ansible.builtin.debug:
+    msg: talosctl apply-config --insecure --nodes {{ ansible_default_ipv4['address'] }} --config-patch @talos-patch.yaml --file {{ talos_machineconfig }}
+  when: talos_machineconfig != "" and ansible_default_ipv4.gateway is defined

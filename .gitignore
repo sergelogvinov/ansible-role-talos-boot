@@ -1,3 +1,6 @@
+_cfgs
 facts/
 tests/
 ansible.cfg
+talos-patch.yaml
+talos.yaml
