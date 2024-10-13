@@ -16,14 +16,22 @@ machine:
       - interface: eth0
         dhcp: false
         addresses:
-          - "{{ ansible_default_ipv4['address'] }}/{{ ansible_default_ipv4['prefix'] }}"
+{% set cidrv4 = ansible_default_ipv4['address'] + '/' + ansible_default_ipv4['prefix'] if ansible_default_ipv4 is defined %}
+{% set cidrv6 = ansible_default_ipv6['address'] + '/' + ansible_default_ipv6['prefix'] if ansible_default_ipv6 is defined %}
+          - "{{ cidrv4 }}"
 {% if ansible_default_ipv6 is defined and ansible_default_ipv6['interface'] is defined and ansible_default_ipv6['address'][:4] != 'fe80' %}
-          - "{{ ansible_default_ipv6['address'] }}/{{ ansible_default_ipv6['prefix'] }}"
+          - "{{ cidrv6 }}"
 {% endif %}
         routes:
+{% if not (ansible_default_ipv4['gateway'] | ansible.utils.ipaddr(cidrv4)) %}
+          - network: "{{ ansible_default_ipv4['gateway'] }}/32"
+{% endif %}
           - network: "0.0.0.0/0"
             gateway: "{{ ansible_default_ipv4['gateway'] }}"
 {% if ansible_default_ipv6 is defined and ansible_default_ipv6['interface'] is defined and ansible_default_ipv6['address'][:4] != 'fe80' %}
+{% if ansible_default_ipv6['gateway'][:4] != 'fe80' and (not (ansible_default_ipv6['gateway'] | ansible.utils.ipaddr(cidrv6))) %}
+          - network: "{{ ansible_default_ipv6['gateway'] }}/128"
+{% endif %}
           - network: "::/0"
             gateway: "{{ ansible_default_ipv6['gateway'] }}"
 {% endif %}

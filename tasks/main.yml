@@ -42,6 +42,7 @@
   template:
     src: "talos.j2"
     dest: "{{ playbook_dir }}/../talos-patch.yaml"
+  when: talos_machineconfig != ""
 
 - meta: flush_handlers
 
@@ -69,10 +70,20 @@
   rescue:
     - name: check server
       connection: local
-      command: "ping -c 10 {{ ansible_default_ipv4['address'] }}"
+      command: "ping -c 15 {{ ansible_default_ipv4['address'] }}"
       when: talos_kexec
 
-- name: talos apply command
+- name: Manual talos apply command
   ansible.builtin.debug:
     msg: talosctl apply-config --insecure --nodes {{ ansible_default_ipv4['address'] }} --config-patch @talos-patch.yaml --file {{ talos_machineconfig }}
   when: talos_machineconfig != "" and ansible_default_ipv4.gateway is defined
+
+- name: Wait for manual interruption
+  ansible.builtin.pause:
+    minutes: '1'
+  when: talos_kexec and talos_machineconfig != ""
+
+- name: Apply talos machineconfig
+  connection: local
+  command: talosctl apply-config --insecure --nodes {{ ansible_default_ipv4['address'] }} --config-patch @talos-patch.yaml --file {{ talos_machineconfig }}
+  when: talos_kexec and talos_machineconfig != "" and ansible_default_ipv4.gateway is defined
