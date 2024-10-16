@@ -85,5 +85,7 @@
 
 - name: Apply talos machineconfig
   connection: local
-  command: talosctl apply-config --insecure --nodes {{ ansible_default_ipv4['address'] }} --config-patch @talos-patch.yaml --file {{ talos_machineconfig }}
+  ansible.builtin.command:
+    cmd: talosctl apply-config --insecure --nodes {{ ansible_default_ipv4['address'] }} --config-patch @talos-patch.yaml --file {{ talos_machineconfig }}
+    chdir: "{{ playbook_dir }}/.."
   when: talos_kexec and talos_machineconfig != "" and ansible_default_ipv4.gateway is defined
