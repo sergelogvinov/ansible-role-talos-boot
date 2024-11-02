@@ -44,6 +44,11 @@ Useful variables
     #
     # talos_cmdline_addon: "talos.logging.kernel=udp://1.2.3.4:5044"
 
+    # IPv4 network
+    # Default network configuration, if you have ipv6-only network, comment ipv4 and uncomment ipv6 block
+    #
+    talos_cmdline_net: "ip={{ ansible_default_ipv4['address'] }}::{{ ansible_default_ipv4['gateway'] }}:{{ ansible_default_ipv4['netmask'] }}::{{ talos_interface }}:off"
+
     # IPv6 network
     #
     # talos_cmdline_net: "ip=[{{ ansible_default_ipv6['address'] }}]::[{{ ansible_default_ipv6['gateway'] }}]:{{ ansible_default_ipv6['prefix'] }}::{{ talos_interface }}:off:[2001:4860:4860::8888]:[2606:4700::1111]:[2606:4700:f1::1]"
