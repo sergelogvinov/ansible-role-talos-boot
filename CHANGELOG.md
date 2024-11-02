@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.1](https://github.com/sergelogvinov/ansible-role-talos-boot/compare/v0.4.0...v0.4.1) (2024-11-02)
+
+
+### Bug Fixes
+
+* ipv6 only network ([ee7af82](https://github.com/sergelogvinov/ansible-role-talos-boot/commit/ee7af821e653e31497718c34fa77fdec00952295))
+* talos apply ([b4b4bc3](https://github.com/sergelogvinov/ansible-role-talos-boot/commit/b4b4bc31073981f4c8d80e6bb1eb9d9c1ec1d0ca))
+
 ## [0.4.0](https://github.com/sergelogvinov/ansible-role-talos-boot/compare/v0.3.0...v0.4.0) (2024-10-13)
 
 
