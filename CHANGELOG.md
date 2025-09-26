@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/sergelogvinov/ansible-role-talos-boot/compare/v0.4.1...v0.5.0) (2025-09-26)
+
+
+### Features
+
+* ignore interfaces ([cdc39ee](https://github.com/sergelogvinov/ansible-role-talos-boot/commit/cdc39eecbba4f3c5aa0596d23ea7c96579b47d22))
+
 ## [0.4.1](https://github.com/sergelogvinov/ansible-role-talos-boot/compare/v0.4.0...v0.4.1) (2024-11-02)
 
 
