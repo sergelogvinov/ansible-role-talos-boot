@@ -41,6 +41,13 @@ machine:
           - network: "::/0"
             gateway: "{{ ansible_default_ipv6['gateway'] }}"
 {% endif %}
+{% for interface in ansible_interfaces|sort if not interface in [ansible_default_ipv4['alias'],'lo','eth0','dummy0','dummy1','wg0','wg1'] %}{% set iface = ansible_facts[interface] %}
+{% if iface.type is defined and iface.type == "ether" and iface.pciid is defined and iface.macaddress is defined
+  and not iface.module in ['cdc_ether'] %}
+      - interface: {{ interface }}
+        ignore: true
+{% endif %}
+{% endfor %}
     kubespan:
       enabled: true
   install:

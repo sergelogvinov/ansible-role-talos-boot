@@ -10,7 +10,7 @@
     - "../vars/empty.yml"
 
 - name: Get Talos
-  become: yes
+  become: true
   get_url:
     url: "{{ item.url }}"
     dest: "/boot/{{ item.name }}"
@@ -20,7 +20,7 @@
     - { url: "{{ talos_initrd }}", checksum: "{{ talos_initrd_sha }}", name: talos-initrd.xz  }
 
 - name: Add grub menu (debian)
-  become: yes
+  become: true
   template:
     src: grub/debian.j2
     dest: /etc/grub.d/10_talos
@@ -29,7 +29,7 @@
   notify: Update-grub
 
 - name: Add grub menu (redhat)
-  become: yes
+  become: true
   template:
     src: grub/centos.j2
     dest: /etc/grub.d/10_talos
@@ -47,7 +47,7 @@
 - meta: flush_handlers
 
 - name: packages (debian)
-  become: yes
+  become: true
   apt:
     name: 'kexec-tools'
     update_cache: yes
@@ -57,7 +57,7 @@
 - name: Run Talos
   block:
     - name: Run kexec
-      become: yes
+      become: true
       command: "kexec {{ item }}"
       timeout: 30
       register: result
