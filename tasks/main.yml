@@ -14,7 +14,7 @@
   get_url:
     url: "{{ item.url }}"
     dest: "/boot/{{ item.name }}"
-    checksum: ""
+    checksum: "{{ item.checksum }}"
   with_items:
     - { url: "{{ talos_kernel }}", checksum: "{{ talos_kernel_sha }}", name: talos-kernel     }
     - { url: "{{ talos_initrd }}", checksum: "{{ talos_initrd_sha }}", name: talos-initrd.xz  }
