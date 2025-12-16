@@ -6,10 +6,10 @@ machine:
 {% endif %}
     nodeIP:
       validSubnets:
-{% if ansible_default_ipv4 is defined and ansible_default_ipv4['interface'] is defined %}
+{% if ansible_default_ipv4 is defined and ansible_default_ipv4['address'] is defined %}
         - "{{ ansible_default_ipv4['address'] }}/32"
 {% endif %}
-{% if ansible_default_ipv6 is defined and ansible_default_ipv6['interface'] is defined and ansible_default_ipv6['address'][:4] != 'fe80' %}
+{% if ansible_default_ipv6 is defined and ansible_default_ipv6['address'] is defined and ansible_default_ipv6['address'][:4] != 'fe80' %}
         - "{{ ansible_default_ipv6['address'] }}/128"
 {% endif %}
   network:
@@ -18,23 +18,23 @@ machine:
       - interface: eth0
         dhcp: false
         addresses:
-{% set cidrv4 = ansible_default_ipv4['address'] + '/' + ansible_default_ipv4['prefix'] if ansible_default_ipv4 is defined %}
-{% set cidrv6 = ansible_default_ipv6['address'] + '/' + ansible_default_ipv6['prefix'] if ansible_default_ipv6 is defined %}
-{% if ansible_default_ipv4 is defined and ansible_default_ipv4['interface'] is defined %}
+{% set cidrv4 = ansible_default_ipv4['address'] + '/' + ansible_default_ipv4['prefix'] if ansible_default_ipv4 is defined and ansible_default_ipv4['address'] is defined %}
+{% set cidrv6 = ansible_default_ipv6['address'] + '/' + ansible_default_ipv6['prefix'] if ansible_default_ipv6 is defined and ansible_default_ipv6['address'] is defined %}
+{% if cidrv4 is defined and cidrv4 != "" %}
           - "{{ cidrv4 }}"
 {% endif %}
-{% if ansible_default_ipv6 is defined and ansible_default_ipv6['interface'] is defined and ansible_default_ipv6['address'][:4] != 'fe80' %}
+{% if cidrv6 is defined and cidrv6 != "" and cidrv6['address'][:4] != 'fe80' %}
           - "{{ cidrv6 }}"
 {% endif %}
         routes:
-{% if ansible_default_ipv4 is defined and ansible_default_ipv4['interface'] is defined %}
+{% if ansible_default_ipv4 is defined and ansible_default_ipv4['address'] is defined %}
 {% if not (ansible_default_ipv4['gateway'] | ansible.utils.ipaddr(cidrv4)) %}
           - network: "{{ ansible_default_ipv4['gateway'] }}/32"
 {% endif %}
           - network: "0.0.0.0/0"
             gateway: "{{ ansible_default_ipv4['gateway'] }}"
 {% endif %}
-{% if ansible_default_ipv6 is defined and ansible_default_ipv6['interface'] is defined and ansible_default_ipv6['address'][:4] != 'fe80' %}
+{% if ansible_default_ipv6 is defined and ansible_default_ipv6['address'] is defined and ansible_default_ipv6['address'][:4] != 'fe80' %}
 {% if ansible_default_ipv6['gateway'][:4] != 'fe80' and (not (ansible_default_ipv6['gateway'] | ansible.utils.ipaddr(cidrv6))) %}
           - network: "{{ ansible_default_ipv6['gateway'] }}/128"
 {% endif %}
@@ -55,4 +55,8 @@ machine:
     bootloader: true
     wipe: true
 {% set mounts = ansible_facts.mounts | selectattr('mount', 'in', ['/boot', '/']) | map(attribute='device') | reject('regex', '^/dev/mapper/.+') | list %}
+{% if mounts | length > 0 %}
     disk: {{ mounts[0] | regex_replace('p?[0-9]+$', '') }}
+{% else %}
+    disk: {{ talos_disk }}
+{% endif %}

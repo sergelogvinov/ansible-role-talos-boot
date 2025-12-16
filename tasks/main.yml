@@ -1,12 +1,12 @@
 
 - include_vars: "{{ item }}"
   with_first_found:
-    - "../vars/{{ ansible_os_family }}.yml"
+    - "../vars/{{ ansible_facts['os_family'] }}.yml"
     - "../vars/empty.yml"
 
 - include_vars: "{{ item }}"
   with_first_found:
-    - "../vars/{{ ansible_architecture }}.yml"
+    - "../vars/{{ ansible_facts['architecture'] }}.yml"
     - "../vars/empty.yml"
 
 - name: Get Talos
@@ -25,7 +25,7 @@
     src: grub/debian.j2
     dest: /etc/grub.d/10_talos
     mode: 0755
-  when: talos_grub and ansible_os_family == "Debian"
+  when: talos_grub and ansible_facts["os_family"] == "Debian"
   notify: Update-grub
 
 - name: Add grub menu (redhat)
@@ -34,7 +34,7 @@
     src: grub/centos.j2
     dest: /etc/grub.d/10_talos
     mode: 0755
-  when: talos_grub and ansible_os_family == "RedHat"
+  when: talos_grub and ansible_facts["os_family"] == "RedHat"
   notify: Update-grub
 
 - name: talos network patch
@@ -52,7 +52,7 @@
     name: 'kexec-tools'
     update_cache: yes
     cache_valid_time: 3600
-  when: talos_kexec and ansible_os_family == "Debian"
+  when: talos_kexec and ansible_facts["os_family"] == "Debian"
 
 - name: Run Talos
   block:
@@ -70,13 +70,13 @@
   rescue:
     - name: check server
       connection: local
-      command: "ping -c 15 {{ ansible_default_ipv4['address'] }}"
+      command: "ping -c 15 {{ ansible_facts['default_ipv4']['address'] }}"
       when: talos_kexec
 
 - name: Manual talos apply command
   ansible.builtin.debug:
-    msg: talosctl apply-config --insecure --nodes {{ ansible_default_ipv4['address'] }} --config-patch @talos-patch.yaml --file {{ talos_machineconfig }}
-  when: talos_machineconfig != "" and ansible_default_ipv4.gateway is defined
+    msg: talosctl apply-config --insecure --nodes {{ ansible_facts["default_ipv4"]["address"] }} --config-patch @talos-patch.yaml --file {{ talos_machineconfig }}
+  when: talos_machineconfig != "" and ansible_facts["default_ipv4"]["gateway"] is defined
 
 - name: Wait for manual interruption
   ansible.builtin.pause:
@@ -86,6 +86,6 @@
 - name: Apply talos machineconfig
   connection: local
   ansible.builtin.command:
-    cmd: talosctl apply-config --insecure --nodes {{ ansible_default_ipv4['address'] }} --config-patch @talos-patch.yaml --file {{ talos_machineconfig }}
+    cmd: talosctl apply-config --insecure --nodes {{ ansible_facts["default_ipv4"]["address"] }} --config-patch @talos-patch.yaml --file {{ talos_machineconfig }}
     chdir: "{{ playbook_dir }}/.."
-  when: talos_kexec and talos_machineconfig != "" and ansible_default_ipv4.gateway is defined
+  when: talos_kexec and talos_machineconfig != "" and ansible_facts["default_ipv4"]["gateway"] is defined

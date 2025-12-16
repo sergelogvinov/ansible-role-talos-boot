@@ -12,5 +12,7 @@ talos_interface: "eth0"
 talos_cmdline_net: "ip={{ ansible_default_ipv4['address'] }}::{{ ansible_default_ipv4['gateway'] }}:{{ ansible_default_ipv4['netmask'] }}::{{ talos_interface }}:off"
 talos_cmdline_addon: "talos.dashboard.disabled=1"
 
+talos_disk: /dev/vda
+
 talos_grub: false
 talos_kexec: false
