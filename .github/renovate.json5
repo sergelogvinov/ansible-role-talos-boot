@@ -15,6 +15,9 @@
   "separateMajorMinor": true,
   "separateMultipleMajor": true,
   "rebaseWhen": "behind-base-branch",
+  "ignorePaths": [
+    "/hack/.*"
+  ],
   "regexManagers": [
     {
       "fileMatch": ["^defaults/main\\.yml$"],
@@ -23,7 +26,14 @@
       ],
       "depNameTemplate": "siderolabs/talos",
       "datasourceTemplate": "github-releases",
-      "extractVersionTemplate": "^v?(?<version>.*)$",
+      "extractVersionTemplate": "^v?(?<version>.*)$"
+    }
+  ],
+  "packageRules": [
+    {
+      "matchManagers": [
+        "regex"
+      ],
       "postUpgradeTasks": {
         "commands": [
           "sh hack/update-hashes.sh {{{newVersion}}}"

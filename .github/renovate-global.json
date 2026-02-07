@@ -3,5 +3,8 @@
     "platform": "github",
     "repositories": [
         "sergelogvinov/ansible-role-talos-boot"
+    ],
+    "allowedPostUpgradeCommands": [
+        "^\.\/hack\/update-hashes\.sh"
     ]
 }
