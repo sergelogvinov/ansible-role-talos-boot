@@ -23,7 +23,17 @@
       ],
       "depNameTemplate": "siderolabs/talos",
       "datasourceTemplate": "github-releases",
-      "extractVersionTemplate": "^v?(?<version>.*)$"
+      "extractVersionTemplate": "^v?(?<version>.*)$",
+      "postUpgradeTasks": {
+        "commands": [
+          "sh hack/update-hashes.sh {{{newVersion}}}"
+        ],
+        "fileFilters": [
+          "vars/x86_64.yml",
+          "vars/aarch64.yml"
+        ],
+        "executionMode": "branch"
+      }
     }
   ]
 }
