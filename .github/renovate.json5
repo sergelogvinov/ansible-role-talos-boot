@@ -1,0 +1,29 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":semanticCommits",
+    ":semanticCommitScopeDisabled",
+  ],
+  "dependencyDashboard": true,
+  "dependencyDashboardTitle": "Renovate Dashboard",
+  "prHeader": "Update Request | Renovate Bot",
+  "suppressNotifications": [
+    "prEditedNotification",
+    "prIgnoreNotification"
+  ],
+  "separateMajorMinor": true,
+  "separateMultipleMajor": true,
+  "rebaseWhen": "behind-base-branch",
+  "regexManagers": [
+    {
+      "fileMatch": ["^defaults/main\\.yml$"],
+      "matchStrings": [
+        "talos_version: (?<currentValue>.*?)\\n"
+      ],
+      "depNameTemplate": "siderolabs/talos",
+      "datasourceTemplate": "github-releases",
+      "extractVersionTemplate": "^v?(?<version>.*)$"
+    }
+  ]
+}
