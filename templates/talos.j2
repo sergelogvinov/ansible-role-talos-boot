@@ -6,11 +6,11 @@ machine:
 {% endif %}
     nodeIP:
       validSubnets:
-{% if ansible_default_ipv4 is defined and ansible_default_ipv4['address'] is defined %}
-        - "{{ ansible_default_ipv4['address'] }}/32"
+{% if ansible_facts["default_ipv4"] is defined and ansible_facts["default_ipv4"]["address"] is defined %}
+        - "{{ ansible_facts["default_ipv4"]["address"] }}/32"
 {% endif %}
-{% if ansible_default_ipv6 is defined and ansible_default_ipv6['address'] is defined and ansible_default_ipv6['address'][:4] != 'fe80' %}
-        - "{{ ansible_default_ipv6['address'] }}/128"
+{% if ansible_facts["default_ipv6"] is defined and ansible_facts["default_ipv6"]["address"] is defined and ansible_facts["default_ipv6"]["address"][:4] != 'fe80' %}
+        - "{{ ansible_facts["default_ipv6"]["address"] }}/128"
 {% endif %}
   network:
     hostname: "{{ server_hostname|default(inventory_hostname)|split('.')|first }}"
@@ -18,8 +18,8 @@ machine:
       - interface: eth0
         dhcp: false
         addresses:
-{% set cidrv4 = ansible_default_ipv4['address'] + '/' + ansible_default_ipv4['prefix'] if ansible_default_ipv4 is defined and ansible_default_ipv4['address'] is defined %}
-{% set cidrv6 = ansible_default_ipv6['address'] + '/' + ansible_default_ipv6['prefix'] if ansible_default_ipv6 is defined and ansible_default_ipv6['address'] is defined %}
+{% set cidrv4 = ansible_facts["default_ipv4"]["address"] + '/' + ansible_facts["default_ipv4"]["prefix"] if ansible_facts["default_ipv4"] is defined and ansible_facts["default_ipv4"]["address"] is defined %}
+{% set cidrv6 = ansible_facts["default_ipv6"]["address"] + '/' + ansible_facts["default_ipv6"]["prefix"] if ansible_facts["default_ipv6"] is defined and ansible_facts["default_ipv6"]["address"] is defined %}
 {% if cidrv4 is defined and cidrv4 != "" %}
           - "{{ cidrv4 }}"
 {% endif %}
@@ -27,21 +27,21 @@ machine:
           - "{{ cidrv6 }}"
 {% endif %}
         routes:
-{% if ansible_default_ipv4 is defined and ansible_default_ipv4['address'] is defined %}
-{% if not (ansible_default_ipv4['gateway'] | ansible.utils.ipaddr(cidrv4)) %}
-          - network: "{{ ansible_default_ipv4['gateway'] }}/32"
+{% if ansible_facts["default_ipv4"] is defined and ansible_facts["default_ipv4"]["address"] is defined %}
+{% if not (ansible_facts["default_ipv4"]["gateway"] | ansible.utils.ipaddr(cidrv4)) %}
+          - network: "{{ ansible_facts["default_ipv4"]["gateway"] }}/32"
 {% endif %}
           - network: "0.0.0.0/0"
-            gateway: "{{ ansible_default_ipv4['gateway'] }}"
+            gateway: "{{ ansible_facts["default_ipv4"]["gateway"] }}"
 {% endif %}
-{% if ansible_default_ipv6 is defined and ansible_default_ipv6['address'] is defined and ansible_default_ipv6['address'][:4] != 'fe80' %}
-{% if ansible_default_ipv6['gateway'][:4] != 'fe80' and (not (ansible_default_ipv6['gateway'] | ansible.utils.ipaddr(cidrv6))) %}
-          - network: "{{ ansible_default_ipv6['gateway'] }}/128"
+{% if ansible_facts["default_ipv6"] is defined and ansible_facts["default_ipv6"]["address"] is defined and ansible_facts["default_ipv6"]["address"][:4] != 'fe80' %}
+{% if ansible_facts["default_ipv6"]["gateway"][:4] != 'fe80' and (not (ansible_facts["default_ipv6"]["gateway"] | ansible.utils.ipaddr(cidrv6))) %}
+          - network: "{{ ansible_facts["default_ipv6"]["gateway"] }}/128"
 {% endif %}
           - network: "::/0"
-            gateway: "{{ ansible_default_ipv6['gateway'] }}"
+            gateway: "{{ ansible_facts["default_ipv6"]["gateway"] }}"
 {% endif %}
-{% for interface in ansible_interfaces|sort if not interface in [ansible_default_ipv4['alias'],'lo','eth0','dummy0','dummy1','wg0','wg1'] %}{% set iface = ansible_facts[interface] %}
+{% for interface in ansible_facts["interfaces"]|sort if not interface in [ansible_facts["default_ipv4"]["alias"],'lo','eth0','dummy0','dummy1','wg0','wg1'] %}{% set iface = ansible_facts[interface] %}
 {% if iface.type is defined and iface.type == "ether" and iface.pciid is defined and iface.macaddress is defined
   and not iface.module in ['cdc_ether'] %}
       - interface: {{ interface }}

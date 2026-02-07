@@ -1,5 +1,5 @@
 ---
 
 - name: Update-grub
-  shell: "{{ update_grub_cmd }}"
-  become: yes
+  become: true
+  ansible.builtin.shell: "{{ update_grub_cmd }}"

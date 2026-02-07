@@ -1,17 +1,17 @@
 
-- include_vars: "{{ item }}"
+- ansible.builtin.include_vars: "{{ item }}"
   with_first_found:
     - "../vars/{{ ansible_facts['os_family'] }}.yml"
     - "../vars/empty.yml"
 
-- include_vars: "{{ item }}"
+- ansible.builtin.include_vars: "{{ item }}"
   with_first_found:
     - "../vars/{{ ansible_facts['architecture'] }}.yml"
     - "../vars/empty.yml"
 
 - name: Get Talos
   become: true
-  get_url:
+  ansible.builtin.get_url:
     url: "{{ item.url }}"
     dest: "/boot/{{ item.name }}"
     checksum: "{{ item.checksum }}"
@@ -21,7 +21,7 @@
 
 - name: Add grub menu (debian)
   become: true
-  template:
+  ansible.builtin.template:
     src: grub/debian.j2
     dest: /etc/grub.d/10_talos
     mode: 0755
@@ -30,7 +30,7 @@
 
 - name: Add grub menu (redhat)
   become: true
-  template:
+  ansible.builtin.template:
     src: grub/centos.j2
     dest: /etc/grub.d/10_talos
     mode: 0755
@@ -39,16 +39,16 @@
 
 - name: talos network patch
   connection: local
-  template:
+  ansible.builtin.template:
     src: "talos.j2"
     dest: "{{ playbook_dir }}/../talos-patch.yaml"
   when: talos_machineconfig != ""
 
-- meta: flush_handlers
+- ansible.builtin.meta: flush_handlers
 
 - name: packages (debian)
   become: true
-  apt:
+  ansible.builtin.apt:
     name: 'kexec-tools'
     update_cache: yes
     cache_valid_time: 3600
@@ -58,7 +58,7 @@
   block:
     - name: Run kexec
       become: true
-      command: "kexec {{ item }}"
+      ansible.builtin.command: "kexec {{ item }}"
       timeout: 30
       register: result
       failed_when: result.rc != 0
@@ -70,7 +70,7 @@
   rescue:
     - name: check server
       connection: local
-      command: "ping -c 15 {{ ansible_facts['default_ipv4']['address'] }}"
+      ansible.builtin.command: "ping -c 15 {{ ansible_facts['default_ipv4']['address'] }}"
       when: talos_kexec
 
 - name: Manual talos apply command
