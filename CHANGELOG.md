@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.6.0](https://github.com/sergelogvinov/ansible-role-talos-boot/compare/v0.5.0...v0.6.0) (2026-02-07)
+
+
+### Features
+
+* add renovate ([540b6b1](https://github.com/sergelogvinov/ansible-role-talos-boot/commit/540b6b12ec76363453afbbd77c63964b199e4969))
+* support modern ansible ([cd05d3c](https://github.com/sergelogvinov/ansible-role-talos-boot/commit/cd05d3cf4b20c9c8af77b5e290c7d50ba20e684c))
+
+
+### Bug Fixes
+
+* renovate ([73ebb73](https://github.com/sergelogvinov/ansible-role-talos-boot/commit/73ebb73f02f19ec8d02b52843dd0ebd3ccb83653))
+* renovate ([1ec4ca0](https://github.com/sergelogvinov/ansible-role-talos-boot/commit/1ec4ca0e025e1252de39cf7b6f3e3e19d4f69d38))
+* renovate ([c72860f](https://github.com/sergelogvinov/ansible-role-talos-boot/commit/c72860fa888940c16975c239947bdb34e14d4c63))
+
 ## [0.5.0](https://github.com/sergelogvinov/ansible-role-talos-boot/compare/v0.4.1...v0.5.0) (2025-10-23)
 
 
