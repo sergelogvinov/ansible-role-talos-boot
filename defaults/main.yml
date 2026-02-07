@@ -1,5 +1,5 @@
 
-talos_version: 1.10.7
+talos_version: 1.12.2
 
 talos_platform: metal
 talos_machineconfig: ""
