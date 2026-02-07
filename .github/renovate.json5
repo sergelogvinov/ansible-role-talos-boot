@@ -36,7 +36,7 @@
       ],
       "postUpgradeTasks": {
         "commands": [
-          "sh hack/update-hashes.sh {{{newVersion}}}"
+          "./hack/update-hashes.sh {{{newVersion}}}"
         ],
         "fileFilters": [
           "vars/x86_64.yml",

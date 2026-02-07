@@ -1,0 +1,10 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-global-schema.json",
+  "platform": "github",
+  "repositories": [
+    "sergelogvinov/ansible-role-talos-boot"
+  ],
+  "allowedPostUpgradeCommands": [
+    "^./hack/update-hashes.sh"
+  ]
+}
