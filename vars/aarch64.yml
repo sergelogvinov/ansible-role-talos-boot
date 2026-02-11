@@ -1,5 +1,5 @@
 
 talos_kernel: "https://github.com/siderolabs/talos/releases/download/v{{ talos_version }}/vmlinuz-arm64"
-talos_kernel_sha: sha256:07a4baf139f6bd8064916cf33af5c98bf2974516c2d6dee34ec6d76119f5533c
+talos_kernel_sha: sha256:e17cf56b26bc33c5f870f9a2bd27bed873ad547ab2fcd98fb2ca2576ec880832
 talos_initrd: "https://github.com/siderolabs/talos/releases/download/v{{ talos_version }}/initramfs-arm64.xz"
-talos_initrd_sha: sha256:edd34a1f464044a4f3c0f159a9304a70530bc55ae58d54487c8d90fadebac7bb
+talos_initrd_sha: sha256:e3b94df5c838dbee4e33b2bba51e45b22eb210db9445468ca491573955c55735
