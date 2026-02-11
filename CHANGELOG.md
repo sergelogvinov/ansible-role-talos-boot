@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.1](https://github.com/sergelogvinov/ansible-role-talos-boot/compare/v0.6.0...v0.6.1) (2026-02-11)
+
+
+### Bug Fixes
+
+* ansible deprecation warning ([0f17bf2](https://github.com/sergelogvinov/ansible-role-talos-boot/commit/0f17bf27e8dd508932d4b166a070f684b69b929c))
+
 ## [0.6.0](https://github.com/sergelogvinov/ansible-role-talos-boot/compare/v0.5.0...v0.6.0) (2026-02-07)
 
 
