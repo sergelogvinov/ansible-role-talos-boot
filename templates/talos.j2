@@ -23,7 +23,7 @@ machine:
 {% if cidrv4 is defined and cidrv4 != "" %}
           - "{{ cidrv4 }}"
 {% endif %}
-{% if cidrv6 is defined and cidrv6 != "" and cidrv6['address'][:4] != 'fe80' %}
+{% if cidrv6 is defined and cidrv6 != "" and cidrv6[:4] != 'fe80' %}
           - "{{ cidrv6 }}"
 {% endif %}
         routes:
