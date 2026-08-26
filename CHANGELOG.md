@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.2](https://github.com/sergelogvinov/ansible-role-talos-boot/compare/v0.6.1...v0.6.2) (2026-08-26)
+
+
+### Bug Fixes
+
+* ipv6 machine config ([e68b541](https://github.com/sergelogvinov/ansible-role-talos-boot/commit/e68b541b86a43d3aafc2c59f854f636383d58e35))
+
 ## [0.6.1](https://github.com/sergelogvinov/ansible-role-talos-boot/compare/v0.6.0...v0.6.1) (2026-03-20)
 
 
